@@ -1,0 +1,1 @@
+export const SHORT_URL_REDIRECT_URL = process.env.SHORT_URL_REDIRECT_URL;

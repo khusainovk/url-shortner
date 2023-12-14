@@ -1,0 +1,55 @@
+services:
+  server:
+    build:
+      context: server
+      target: development
+    ports:
+      - 80:80
+      - 8001:8001
+    depends_on:
+      - frontend
+    networks:
+      - express-mongo
+      - react-express
+
+  frontend:
+    build:
+      context: frontend
+      target: development
+    ports:
+      - 3000:3000
+    stdin_open: true
+    restart: always
+    networks:
+      - react-express
+    depends_on:
+      - backend
+      - mongo
+    expose:
+      - 3000
+
+  backend:
+    restart: always
+    build:
+      context: backend
+      target: development
+    ports:
+      - 8000:8000
+    depends_on:
+      - mongo
+    networks:
+      - express-mongo
+      - react-express
+    expose:
+      - 8000
+
+  mongo:
+    restart: always
+    image: mongo:4.2.0
+    networks:
+      - express-mongo
+    expose:
+      - 27017
+networks:
+  react-express:
+  express-mongo:
